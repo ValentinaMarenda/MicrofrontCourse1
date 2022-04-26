@@ -134,7 +134,7 @@ const footers = [
     ],
   },
   {
-    title: 'Legal',
+    title: 'Legald',
     description: ['Privacy policy', 'Terms of use'],
   },
 ];
