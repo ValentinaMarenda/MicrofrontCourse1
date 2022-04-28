@@ -5,14 +5,15 @@ import App from './app';
 
 //Mount function to start up the app
 
-const mount = (el, { onNavigate, defaultHistory, initialPath })=>{
-    const history = defaultHistory || createMemoryHistory({
-        initialEntries:[initialPath],
+const mount = (el, { onSignIn, onNavigate, defaultHistory, initialPath })=>{
+    const history = defaultHistory || 
+    createMemoryHistory({
+        initialEntries:[initialPath], // initial state, initial path
     });
     if(onNavigate){
          history.listen(onNavigate);
     }
-    ReactDOM.render(<App history={history}/>, el);
+    ReactDOM.render(<App onSignIn={onSignIn} history={history}/>, el);
     return{
         onParentNavigate({pathname: nextPathName}){
             const { pathname } = history.location; 
@@ -27,7 +28,7 @@ const mount = (el, { onNavigate, defaultHistory, initialPath })=>{
 //call mount immediately
 
 if (process.env.NODE_ENV === 'development'){
-    const devRoot = document.querySelector('#_marketing-dev-root');
+    const devRoot = document.querySelector('#_auth-dev-root');
     if(devRoot){
         mount(devRoot, {defaultHistory : createBrowserHistory()});
     }
