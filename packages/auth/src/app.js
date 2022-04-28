@@ -23,6 +23,4 @@ export default ({ history, onSignIn }) => {
                     </Switch>
                 </Router>
             </StylesProvider>
-        </div>
-        
-    )}
+        </div>)}
