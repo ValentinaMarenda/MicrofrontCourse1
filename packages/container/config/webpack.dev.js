@@ -1,32 +1,28 @@
-
-const {merge}= require ('webpack-merge');
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
+const { merge } = require('webpack-merge');
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 const commonConfig = require('./webpack.common');
-const packageJson = require('../package.json')
+const packageJson = require('../package.json');
 
-const devConfig = {
-    mode: 'development',
-    output: {
-        publicPath: 'http://localhost:8080/', 
-    },
-    devServer: {
-        port: 8080,
-        historyApiFallback:{
-            index: 'index.html'
-        }
-    },
-    plugins:[
-        new ModuleFederationPlugin ({
-            name: 'container',
-            remotes:{
-                marketing: 'marketing@http://localhost:8081/remoteEntry.js', //"marketing@" have to match up with the name maketing that we worte inside marketing web dev file
-                auth: 'auth@http://localhost:8082/remoteEntry.js',
-                dashboard: 'dashboard@http://localhost:8083/remoteEntry.js',
+const domain = process.env.PRODUCTION_DOMAIN;
+
+const prodConfig = {
+    mode: 'production', 
+    output:{
+        filename: '[name].[contenthash].js',
+        publicPath: '/container/latest/',
+        
+    }, 
+    plugins: [
+        new ModuleFederationPlugin({
+            name: 'container', 
+            remotes: {
+                marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
+                auth: `auth@${domain}/auth/latest/remoteEntry.js`,
+                dashboard: `dashboard@${domain}/dashboard/latest/remoteEntry.js`,
             },
-            shared: [packageJson.dependencies],
-           // shared: ['react', 'react-dom'] // reduce the number of duplicate dependencies
-        }),
-    ],
-}
+            shared: packageJson.dependencies,
+        })
+    ]
+};
 
-module.exports = merge(commonConfig, devConfig)
+module.exports = merge(commonConfig, prodConfig);
