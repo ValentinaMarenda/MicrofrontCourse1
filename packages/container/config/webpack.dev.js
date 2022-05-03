@@ -1,3 +1,4 @@
+
 const {merge}= require ('webpack-merge');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 const commonConfig = require('./webpack.common');
@@ -20,6 +21,7 @@ const devConfig = {
             remotes:{
                 marketing: 'marketing@http://localhost:8081/remoteEntry.js', //"marketing@" have to match up with the name maketing that we worte inside marketing web dev file
                 auth: 'auth@http://localhost:8082/remoteEntry.js',
+                dashboard: 'dashboard@http://localhost:8083/remoteEntry.js',
             },
             shared: [packageJson.dependencies],
            // shared: ['react', 'react-dom'] // reduce the number of duplicate dependencies
